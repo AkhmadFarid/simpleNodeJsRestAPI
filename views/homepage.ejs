@@ -1,0 +1,62 @@
+<%- include layout/header.ejs %>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="center">
+                <img src="/img/player1.png" class="center">
+            </div>
+            <p><a href="/users"> <b>View List</b></a></p>
+            <p class="text-justify">Ambitioni dedisse scripsisse iudicaretur. Cras mattis iudicium purus sit amet fermentum. Donec sed odio operae, eu vulputate felis rhoncus. Praeterea iter est quasdam res 
+                quas ex communi. At nos hinc posthac, sitientis piros Afros. Petierunt uti sibi concilium totius Galliae in diem certam indicere. Cras mattis iudicium purus sit amet fermentum.</p>
+            <hr/>
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3>Add player:</h3>
+                    </div>
+                    <div class="col-sm-6">
+                        <form action="/" class="inputForm" method="POST">
+                            <input placeholder="First name" name="create_firstName"/>
+                            <input placeholder="Last name" name="create_lastName"/>
+                            <button type="submit" class="btn btn-primary btn-lg">Insert Data</button>
+                        </form>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Player Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Edit Data</th>
+                        <th>Delete Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(print){ %>
+                    <% print.forEach(function (user) { %>
+                    <tr>
+                        <td><%= user.user_id %></td>
+                        <td><%= user.firstName %></td>
+                        <td><%= user.lastName %></td>
+                        <td>
+                            <a href="/edit/<%= user.user_id %>"><button class="btn btn-primary notika-btn-primary">Edit Data</button></a>
+                        </td>
+                        <td>
+                            <form method="POST" action="/delete/<%= user.user_id %>">
+                                <button type="submit" name="delete" value='Delete'
+                                    onClick="return confirm('Are you sure you want to delete this player data?')"
+                                    class="btn btn-primary notika-btn-primary" style="background-color:#d82436;">Remove
+                                    Data</button>
+                                <input type="hidden" name="_method" value="DELETE" />
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<%- include layout/footer.ejs %>
