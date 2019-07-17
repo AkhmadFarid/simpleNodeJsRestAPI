@@ -167,6 +167,22 @@ app.get('/users/:id', (req, res) => {
     })
 })
 
+app.route('/view/(:id)')
+    .get((req, res, next) => {
+        getConnection().query('SELECT * FROM user WHERE user_id = ?', [req.params.id], function(err, rows, fields){
+            if(err){
+                throw err
+            }else{
+                console.log(rows)
+                res.render('view', {
+                    user_id: rows[0].user_id,
+                    firstName: rows[0].firstName,
+                    lastName: rows[0].lastName
+                })
+            }
+        })
+    })
+
 app.delete('/delete/:id', (req, res) => {
     var playerId = {
         id: req.params.id

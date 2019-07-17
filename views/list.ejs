@@ -23,6 +23,7 @@
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Edit Data</th>
+                        <th>View Data</th>
                         <th>Delete Data</th>
                     </tr>
                 </thead>
@@ -35,6 +36,9 @@
                         <td><%= user.lastName %></td>
                         <td>
                             <a href="/edit/<%= user.user_id %>"><button class="btn btn-primary notika-btn-primary">Edit Data</button></a>
+                        </td>
+                        <td>
+                            <a href="/view/<%= user.user_id %>"><button class="btn btn-primary notika-btn-primary">View Data</button></a>
                         </td>
                         <td>
                             <form method="POST" action="/delete/<%= user.user_id %>">
