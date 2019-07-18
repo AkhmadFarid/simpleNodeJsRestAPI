@@ -41,7 +41,7 @@ app.route('/')
                 return
             }
             else {
-                res.redirect("/users")
+                res.redirect("/players")
             }
         })
     })
@@ -108,7 +108,7 @@ app.route('/edit/(:id)')
         }
     })
 
-app.route('/users')
+app.route('/players')
     .get((req, res, next) => {
         getConnection().query('SELECT * FROM user', (err, rows, fields) => {
             if(err) {
@@ -151,7 +151,7 @@ app.route('/users')
 
     })
 
-app.get('/users/:id', (req, res) => {
+app.get('/players/:id', (req, res) => {
 
     const user_id = req.params.id
 
