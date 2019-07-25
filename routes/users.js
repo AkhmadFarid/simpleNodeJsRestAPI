@@ -49,13 +49,13 @@ app.route('/')
 app.route('/edit/(:id)')
     .get((req, res, next) => {
         getConnection().query('SELECT * FROM user WHERE user_id = ?', [req.params.id], function(err, rows, fields){
-            console.log("sini la tu")
             if(err){
                 throw err
-            }else{
-                console.log(rows)
+            }
+            else {
                 res.render('edit', {
                     user_id: rows[0].user_id,
+                    profilePic: rows[0].imgFile,
                     firstName: rows[0].firstName,
                     lastName: rows[0].lastName
                 })
@@ -63,16 +63,18 @@ app.route('/edit/(:id)')
         })
     })
     .put((req, res, next) => {
-        // Input Form Validation
+
         req.assert('firstName', 'Required First Name!').notEmpty()
         req.assert('lastName', 'Require Last Name!').notEmpty()
 
         var errors = req.validationErrors()
 
         if(!errors){
+            var file = req.files.profilePic;
             var playerData = {
                 firstName: req.sanitize('firstName').escape().trim(),
-                lastName: req.sanitize('lastName').escape().trim()
+                lastName: req.sanitize('lastName').escape().trim(),
+                imgFile: file.name
             }
             getConnection().query('UPDATE user SET ? WHERE user_id =' + req.params.id, playerData, function (err, result) {
                 // If Throw Error
@@ -80,14 +82,20 @@ app.route('/edit/(:id)')
                     req.flash('error', err)
                     res.render('edit', {
                         user_id: req.params.id,
+                        profilePic: req.files.profilePic.name,
                         firstName: req.body.firstName,
                         lastName: req.body.lastName
                     })
-                    // res.redirect('/')
                 } else {
+                    if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ) {
+                        file.mv('./views/img/'+file.name, function(err) {
+                            console.log(err)
+                        })
+                    }
                     req.flash('success', 'Employee Data Input Successfully!')
                     res.render('edit', {
                         user_id: req.params.id,
+                        profilePic: req.files.profilePic.name,
                         firstName: req.body.firstName,
                         lastName: req.body.lastName
                     })
@@ -173,11 +181,11 @@ app.route('/view/(:id)')
             if(err){
                 throw err
             }else{
-                console.log(rows)
                 res.render('view', {
                     user_id: rows[0].user_id,
                     firstName: rows[0].firstName,
-                    lastName: rows[0].lastName
+                    lastName: rows[0].lastName,
+                    profilePic: rows[0].imgFile
                 })
             }
         })

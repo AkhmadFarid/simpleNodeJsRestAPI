@@ -5,6 +5,7 @@ const expressValidator = require('express-validator')
 const bodyParser = require('body-parser')
 const userRouter = require('./routes/users')
 const methodOverride = require('method-override')
+const fileUpload = require('express-fileupload')
 const flash = require('express-flash')
 const session = require('express-session')
 
@@ -14,6 +15,7 @@ app.use(express.static('views'))
 app.use(expressValidator())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+app.use(fileUpload())
 app.use(flash())
 
 app.use(session({
